@@ -13,9 +13,17 @@ function Load(width,height){
        var Kazu = 0;
 
        var Hand = new Sprite(10,10);
+       Hand.vx = 5;
+       Hand.vy = 5;
        Hand.image = core.assets["../画像/"+5+".png"];
 
        Hand.addEventListener("enterframe",function(){
+         if(Hand.x <= 0 && Hand.vx < 0) Hand.vx *= -1;
+         if(Hand.x >= 490 && Hand.vx > 0) Hand.vx *= -1;
+         if(Hand.y <= 0 && Hand.vy < 0) Hand.vy *= -1;
+         if(Hand.y >= 270 && Hand.vy > 0) Hand.vy *= -1;
+         Hand.x += Hand.vx;
+         Hand.y += Hand.vy;
          Hand.rotation += 10;
          for (var o = 0; o < Images.length; o++) {
            Images[o].frame += 500 *280;
@@ -54,9 +62,14 @@ function Load(width,height){
 
         scene.addChild(Hand);
 
-        scene.on("touchstart",function(e){
-          Hand.x = e.x-5;
-          Hand.y = e.y-5;
+        var VVX = 0;
+        var VVY = 0;
+
+        scene.on("touchmove",function(e){
+          Hand.vx = VVX + e.x/10;
+          Hand.vy = VVY + e.y/10;
+          VVX = e.x/10;
+          VVY = e.y/10;
           return;
         })
 
