@@ -26,11 +26,12 @@ function Load(width,height){
          Hand.y += Hand.vy;
          Hand.rotation += 10;
          for (var o = 0; o < Images.length; o++) {
-           Images[o].frame += 500 *280;
+           Images[o].frame += 250 * 140;
          }
          for (var o = 0; o < Images.length; o++) {
            if(Images[o].intersect(Hand)){
-             if(Images[o].type==2||Images[o].type==4) scene.removeChild(Images[o]);
+             if(Images[o].type==2&&Hand.frame==0) scene.removeChild(Images[o]);
+             if(Images[o].type==4&&Hand.frame==1) scene.removeChild(Images[o]);
            }
          }
          return;
@@ -40,10 +41,10 @@ function Load(width,height){
 
        function Image(x,y,z,o){
          kaka = Images.length
-         Images[kaka] = new Sprite(10,10);
+         Images[kaka] = new Sprite(20,20);
          Images[kaka].image = core.assets["../画像/"+z+".png"];
-         Images[kaka].x = x*10;
-         Images[kaka].y = y*10;
+         Images[kaka].x = x*20;
+         Images[kaka].y = y*20;
          Images[kaka].type = z;
          Images[kaka].frame = o;
          scene.addChild(Images[kaka]);
@@ -52,8 +53,8 @@ function Load(width,height){
 
         for (var k = 1; k < 5; k++) {
           Kazu = 0;
-          for (var j = 0; j < 28; j++) {
-            for (var i = 0; i < 50; i++) {
+          for (var j = 0; j < 14; j++) {
+            for (var i = 0; i < 25; i++) {
               Image(i,j,k,Kazu);
               Kazu++;
             }
@@ -62,14 +63,15 @@ function Load(width,height){
 
         scene.addChild(Hand);
 
-        var VVX = 0;
-        var VVY = 0;
-
         scene.on("touchmove",function(e){
-          Hand.vx = VVX + e.x/10;
-          Hand.vy = VVY + e.y/10;
-          VVX = e.x/10;
-          VVY = e.y/10;
+          Hand.x = e.x;
+          Hand.y = e.y;
+          return;
+        })
+
+        Hand.addEventListener("touchstart",function(){
+          if(Hand.frame==0) Hand.frame = 1;
+          else Hand.frame = 0;
           return;
         })
 
