@@ -30,8 +30,18 @@ function Load(width,height){
          }
          for (var o = 0; o < Images.length; o++) {
            if(Images[o].intersect(Hand)){
-             if(Images[o].type==2&&Hand.frame==0) scene.removeChild(Images[o]);
-             if(Images[o].type==4&&Hand.frame==1) scene.removeChild(Images[o]);
+             if(Images[o].type==2&&Hand.frame==0&&Images[o].in){
+               scene.removeChild(Images[o]);
+               Hand.vx *= -1;
+               Hand.vy *= -1;
+               Images[o].in = false;
+             }
+             if(Images[o].type==4&&Hand.frame==1&&Images[o].in){
+               scene.removeChild(Images[o]);
+               Hand.vx *= -1;
+               Hand.vy *= -1;
+               Images[o].in = false;
+             }
            }
          }
          return;
@@ -47,6 +57,7 @@ function Load(width,height){
          Images[kaka].y = y*20;
          Images[kaka].type = z;
          Images[kaka].frame = o;
+         Images[kaka].in = true;
          scene.addChild(Images[kaka]);
          return;
        }
