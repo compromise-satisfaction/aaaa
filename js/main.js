@@ -4,7 +4,7 @@ function Load(width,height){
   var core = new Core(width, height);
 
   core.preload("../画像/1.png","../画像/2.png","../画像/3.png","../画像/4.png","../画像/5.png");
-  core.fps = 30;
+  core.fps = 10;
   core.onload = function(){
     var StartScene = function(){
        var scene = new Scene();                                // 新しいシーンを作る
