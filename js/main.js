@@ -94,12 +94,16 @@ function Load(width,height){
           Button[i]._element.onclick = function(e){
             switch(i){
               case 0:
-                Hand.frame = 0;
+                if(Hand.frame==1){
+                  Hand.frame = 0;
+                  Button[i]._element.value = "水着";
+                }
+                else{
+                  Hand.frame = 1;
+                  Button[i]._element.value = "肌";
+                }
                 break;
               case 1:
-                Hand.frame = 1;
-                break;
-              case 2:
                 scene.removeChild(Hand);
                 for (var o = 0; o < Images.length; o++) {
                     Images[o].in = true;
@@ -114,9 +118,8 @@ function Load(width,height){
           scene.addChild(Button[i]);
         }
 
-        Buttons(460,240,"肌",0);
-        Buttons(420,240,"水着",1);
-        Buttons(380,240,"戻す",2);
+        Buttons(460,240,"水着",0);
+        Buttons(420,240,"戻す",1);
 
        return scene;
     };
