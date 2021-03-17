@@ -1,21 +1,21 @@
 enchant()
 
 function Load(width,height){
-  var core = new Core(width, height);
+  var game = new Core(width, height);
 
-  core.preload("../画像/1.png","../画像/2.png","../画像/3.png","../画像/4.png","../画像/5.png");
-  core.fps = 10;
-  core.onload = function(){
+  game.preload("../画像/1.png","../画像/2.png","../画像/3.png","../画像/4.png","../画像/5.png");
+  game.fps = 10;
+  game.onload = function(){
     var StartScene = function(){
        var scene = new Scene();                                // 新しいシーンを作る
 
        var Images = [];
        var Kazu = 0;
 
-       var Hand = new Sprite(10,10);
+       var Hand = new Sprite(20,20);
        Hand.vx = 5;
        Hand.vy = 5;
-       Hand.image = core.assets["../画像/"+5+".png"];
+       Hand.image = game.assets["../画像/"+5+".png"];
 
        Hand.addEventListener("enterframe",function(){
          if(Hand.x <= 0 && Hand.vx < 0) Hand.vx *= -1;
@@ -52,7 +52,7 @@ function Load(width,height){
        function Image(x,y,z,o){
          kaka = Images.length
          Images[kaka] = new Sprite(20,20);
-         Images[kaka].image = core.assets["../画像/"+z+".png"];
+         Images[kaka].image = game.assets["../画像/"+z+".png"];
          Images[kaka].x = x*20;
          Images[kaka].y = y*20;
          Images[kaka].type = z;
@@ -80,15 +80,47 @@ function Load(width,height){
           return;
         })
 
-        Hand.addEventListener("touchstart",function(){
-          if(Hand.frame==0) Hand.frame = 1;
-          else Hand.frame = 0;
-          return;
-        })
+        var Button = [];
+
+        function Buttons(x,y,v,i){
+          Button[i] = new Entity();
+          Button[i].moveTo(x,y);
+          Button[i].width = 40;
+          Button[i].height = 40;
+          Button[i]._element = document.createElement("input");
+          Button[i]._element.type = "submit";
+          Button[i]._element.value = v;
+          Button[i].backgroundColor = "buttonface";
+          Button[i]._element.onclick = function(e){
+            switch(i){
+              case 0:
+                Hand.frame = 0;
+                break;
+              case 1:
+                Hand.frame = 1;
+                break;
+              case 2:
+                scene.removeChild(Hand);
+                for (var o = 0; o < Images.length; o++) {
+                    Images[o].in = true;
+                    scene.removeChild(Images[o]);
+                    scene.addChild(Images[o]);
+                }
+                scene.addChild(Hand);
+                break;
+            }
+            return;
+          };
+          scene.addChild(Button[i]);
+        }
+
+        Buttons(460,240,"肌",0);
+        Buttons(420,240,"水着",1);
+        Buttons(380,240,"戻す",2);
 
        return scene;
     };
-    core.replaceScene(StartScene());
+    game.replaceScene(StartScene());
   }
-  core.start()
+  game.start()
 }
